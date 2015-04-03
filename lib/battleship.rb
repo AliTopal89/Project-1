@@ -36,8 +36,8 @@ class Grid
 
         puts "~ #{row_label.inspect}"
         
-        @grid.each_with_index do |a, row_num|
-            puts "#{column_label[row_num]} #{@grid[row_num].inspect}"
+        @grid.each_with_index do |letter, index|
+            puts "#{column_label[index]} #{@grid[index]}"
         end
     end
     
@@ -83,27 +83,15 @@ class Grid
         hit = "X"
         miss = "M"
         shippy =["A1", "A2", "A3", "A4", "A5", "J1", "J2", "J3", "J4", "J5", "D3", "E3", "F3", "G3", "H3","A6", "B6", "C6", "D6", "E6","C1","C2", "C3", "C4", "C5", "E10", "F10", "G10", "H10", "I10"]
-        # not_shippy != shippy
-        # while true 
-        x_coord = coordinate.split(//)[0] #&& x_coord = coordinate.split(//)[1] && x_coord = coordinate.split(//)[2]
-#       ["A1", "A2", "A3", "A4", "A5"].include?(coordinate) && ["J1", "J2", "J3", "J4", "J5"]
+       
+        x_coord = coordinate.split(//)[0] 
         y_coord = coordinate.split(//)[1].to_i #&& y_coord = coordinate.split(//)[2].to_i && y_coord = coordinate.split(//)[3].to_i
         
         if shippy.include?(coordinate)
-            game.score
-            @grid[converter_hash[x_coord][y_coord-1]] = "X"
+            @grid[converter_hash[x_coord]][y_coord-1] = "X"
             puts "you have hit the ship"
 
     
-        # unless shippy.include?(coordinate)
-        #   @grid = "M"
-        #   puts "miss :("
-
-        
-        #else
-        #   puts "you are not playing the right game"
-            # shippy.include?(coordinate)   
-        
         else 
         # binding.pry
             @grid[converter_hash[x_coord]][y_coord-1] = "M"
@@ -123,11 +111,11 @@ class Grid
     
 end
 
-class Player < ActiveRecord::Base
- 	def initialize
- 		@player = player
-    end
-end
+# class Player < ActiveRecord::Base
+#  	def initialize
+#  		@player = player
+#     end
+# end
 
 
 # class Ship #<ActiveRecord::Base
@@ -183,7 +171,7 @@ all_ships = [
 selected_ships = []
 while selected_ships.length < 2 do
     random = rand(0..all_ships.length-1)
-    if !selected_ships.index(all_ships[random])
+    if !selected_ships.index(all_ships[random]) #! so that it passes the ar
         selected_ships << all_ships[random]
     end
 end
@@ -191,11 +179,12 @@ end
 grid.add_ship(selected_ships[0])
 grid.add_ship(selected_ships[1])
 grid.print_grid
+grid.add_hit
 
-puts "wanna play?"
+# puts "wanna play?"
 
-answer = gets.chomp
+# answer = gets.chomp
 
-if answer == 'yes'
-    game = Game.create
-end
+# if answer == 'yes'
+#     game = Game.create
+# end
