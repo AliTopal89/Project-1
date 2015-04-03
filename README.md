@@ -1,5 +1,6 @@
 # Project-1
-Battleship Game
+
+##BATTLESHIP GAME
 
 # Walkthrough of to Battleship game
 You have 10x10 Grid which is the model of the Ocean
