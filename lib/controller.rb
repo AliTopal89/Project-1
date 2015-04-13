@@ -20,10 +20,10 @@ end
 class BattleshipDB < ActiveRecord::Migration
 	def initialize 
  		create_table :games do |column|
- 			column.boolean :completeness #win or no win
+ 			column.boolean :win #win or no win
  			column.integer :score
  			column.string :position
- 			column.string :player	
+ 			# column.string :player	
  			column.boolean :hit		
 
  		end

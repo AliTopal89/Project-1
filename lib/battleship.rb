@@ -79,28 +79,55 @@ class Grid
             "J" => 9
         }
         puts "Where is the ship"
-        coordinate = gets.chomp.to_s
-        hit = "X"
-        miss = "M"
-        shippy =["A1", "A2", "A3", "A4", "A5", "J1", "J2", "J3", "J4", "J5", "D3", "E3", "F3", "G3", "H3","A6", "B6", "C6", "D6", "E6","C1","C2", "C3", "C4", "C5", "E10", "F10", "G10", "H10", "I10"]
-       
-        x_coord = coordinate.split(//)[0] 
-        y_coord = coordinate.split(//)[1].to_i #&& y_coord = coordinate.split(//)[2].to_i && y_coord = coordinate.split(//)[3].to_i
-        
-        if shippy.include?(coordinate)
-            @grid[converter_hash[x_coord]][y_coord-1] = "X"
-            puts "you have hit the ship"
+        # selected_ships = []
+        # while selected_ships.length < 2 do
+        #     random = rand(0..all_ships.length-1)
+        #     if !selected_ships.index(all_ships[random])
+        #         selected_ships << all_ships[random]
+        #     end
+        # end
 
-    
-        else 
-        # binding.pry
-            @grid[converter_hash[x_coord]][y_coord-1] = "M"
-            puts "miss :("
+        # grid.add_ship(selected_ships[0])
+        # grid.add_ship(selected_ships[1])
+        
+            
+            hit = "X"
+            miss = "M"
+            shippy =["A1", "A2", "A3", "A4", "A5", "J1", "J2", "J3", "J4", "J5", "D3", "E3", "F3", "G3", "H3","A6", "B6", "C6", "D6", "E6","C1","C2", "C3", "C4", "C5", "E10", "F10", "G10", "H10", "I10"]
+        # not_shippy != shippy
+        while true
+            coordinate = gets.chomp.to_s
+            x_coord = coordinate.split(//)[0]
+            y_coord = coordinate.split(//)[1].sub("10", " 10").to_i
+
+        
+            if shippy.include?(coordinate)
+                @grid[converter_hash[x_coord]][y_coord-1] = "X"
+                puts "you have hit the ship"
+                print_grid
+                puts "where is the ship"
+                
+                   
+            elsif 
+                @grid[converter_hash[x_coord]][y_coord-1] = "M"
+                puts "miss :("
+                print_grid 
+                puts "where is the ship"   
+                next
+            else
+                "not a valid coordinate"
+                
+            end
         end
         print_grid
-    end
-    
-    private
+        puts "where is the ship"
+     end  #End grid Class
+    # def render_ship(length)
+    #   return " " unless length
+    #   "X " * length
+    # end
+
+    private #make the "new" method inaccessible, to force access to an object through some getter function
     def get_number_from_letter(letter)
         letter_array = []
         ("A".."Z").each do |l|
@@ -108,7 +135,6 @@ class Grid
         end
         return letter_array.index(letter)
     end
-    
 end
 
 # class Player < ActiveRecord::Base
@@ -125,21 +151,23 @@ end
 
 # end
 # end
-# class Game < ActiveRecord::Base
-    
-#     def score
-#         num_of_turns = 100 
-        
-#         score = self.score + 1
-    
-#         Game.update(score: score)
-#     end
-#         #CREATE TABLE "games" ("id" serial primary key, "completeness" boolean, "score" integer, "position" character varying, "player" character varying)
+class Game < ActiveRecord::Base
 
-#     has_many :games, :score
-#     validates :completeness, inclusion: {in: [true,false] }
-#     validates :hit, inclusion: {in: [true,false] } 
-# end
+    has_many :games, :score
+    validates :win, inclusion: {in: [true,false] }
+    validates :hit, inclusion: {in: [true,false] }
+
+    def score
+        num_of_turns = 100 
+        
+        score = self.score + 1
+    
+        Game.update(score: score)
+    end
+        #CREATE TABLE "games" ("id" serial primary key, "win" boolean, "score" integer, "position" character varying, "player" character varying)
+
+     
+end
 
 # class Movement < ActiveRecord::Base
 
@@ -155,7 +183,7 @@ end
 # end
 
 
-
+puts "Let's play Battleship!\n-----\nYou have 100 tries!\n-----"
 grid = Grid.new
 ship1 = Ship.new([["A", 1], ["A", 2], ["A", 3], ["A", 4], ["A", 5]])
 
@@ -181,6 +209,7 @@ grid.add_ship(selected_ships[1])
 grid.print_grid
 grid.add_hit
 
+game = Game.create 
 # puts "wanna play?"
 
 # answer = gets.chomp
